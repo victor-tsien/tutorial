@@ -1,0 +1,43 @@
+<!-- templates/wlog/log_detail.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <br>
+    <!-- 日志标题和日期 -->
+    <div class="card mb-4">
+        <div class="card-header bg-light">
+            <strong class="mb-0">{{ log.created_at|date:"Y年m月d日" }}</strong>
+        </div>
+        <div class="card-body">            
+            <!-- 日志内容 -->
+            <div class="log-content">
+                {{ log.log_text|linebreaks }}
+            </div>
+        </div>
+
+    <!-- 导航按钮 -->
+    <div class="d-flex justify-content-between mt-4">
+        {% if log.get_previous_by_created_at %}
+        <a href="{% url 'wlog:log_detail' log.get_previous_by_created_at.id %}" class="btn btn-outline-primary">
+            ← 上一篇
+        </a>
+        {% else %}
+        <span class="btn btn-outline-secondary disabled">← 上一篇</span>
+        {% endif %}
+
+        <a href="{% url 'wlog:titles' %}" class="btn btn-outline-secondary">
+            返回日志列表
+        </a>
+
+        {% if log.get_next_by_created_at %}
+        <a href="{% url 'wlog:log_detail' log.get_next_by_created_at.id %}" class="btn btn-outline-primary">
+            下一篇 →
+        </a>
+        {% else %}
+        <span class="btn btn-outline-secondary disabled">下一篇 →</span>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}
